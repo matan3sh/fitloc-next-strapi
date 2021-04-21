@@ -1,7 +1,9 @@
+import { Layout } from 'components/layout';
+
 export default function AddWorkoutPage() {
   return (
-    <div>
+    <Layout>
       <h1>Add Workout</h1>
-    </div>
+    </Layout>
   );
 }
