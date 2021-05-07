@@ -17,7 +17,7 @@ const WorkoutsPage = ({ workouts }) => {
 };
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/workouts`);
+  const res = await fetch(`${API_URL}/workouts?_sort=date:ASC`);
   const workouts = await res.json();
   return {
     props: { workouts },

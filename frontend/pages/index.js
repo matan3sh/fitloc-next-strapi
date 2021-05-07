@@ -25,10 +25,10 @@ const HomePage = ({ workouts }) => {
 };
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/workouts`);
+  const res = await fetch(`${API_URL}/workouts?_sort=date:ASC&_limit=3`);
   const workouts = await res.json();
   return {
-    props: { workouts: workouts.slice(0, 3) },
+    props: { workouts },
     revalidate: 1,
   };
 }

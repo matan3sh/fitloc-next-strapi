@@ -24,12 +24,16 @@ const WorkoutPage = ({ workout }) => {
         </div>
 
         <span>
-          {workout.date} at {workout.time}
+          {new Date(workout.date).toLocaleDateString('es-US')} at {workout.time}
         </span>
         <h1>{workout.name}</h1>
         {workout.image && (
           <div className={styles.image}>
-            <Image src={workout.image} width={960} height={600} />
+            <Image
+              src={workout.image.formats.medium.url}
+              width={960}
+              height={600}
+            />
           </div>
         )}
 
@@ -51,7 +55,7 @@ const WorkoutPage = ({ workout }) => {
 };
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`${API_URL}/api/workouts/${slug}`);
+  const res = await fetch(`${API_URL}/workouts?slug=${slug}`);
   const workout = await res.json();
 
   return {
@@ -63,7 +67,7 @@ export async function getStaticProps({ params: { slug } }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/workouts`);
+  const res = await fetch(`${API_URL}/workouts`);
   const workouts = await res.json();
 
   const paths = workouts.map((workout) => ({

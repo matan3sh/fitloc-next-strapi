@@ -8,14 +8,18 @@ const WorkoutItem = ({ workout }) => {
     <div className={styles.workout}>
       <div className={styles.img}>
         <Image
-          src={workout.image ? workout.image : '/images/workout-default.png'}
+          src={
+            workout.image
+              ? workout.image.formats.thumbnail.url
+              : '/images/workout-default.png'
+          }
           width={170}
           height={100}
         />
       </div>
       <div className={styles.info}>
         <span>
-          {workout.date} at {workout.time}
+          {new Date(workout.date).toLocaleDateString('es-US')} at {workout.time}
         </span>
         <h3>{workout.name}</h3>
       </div>
