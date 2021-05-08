@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import Search from './Search';
 import styles from 'styles/components/layout/Header.module.css';
 
 const Header = () => {
@@ -10,6 +11,8 @@ const Header = () => {
           <a>FitLoc</a>
         </Link>
       </div>
+
+      <Search />
 
       <nav>
         <ul>
