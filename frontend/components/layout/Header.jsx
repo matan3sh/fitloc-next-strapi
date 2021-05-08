@@ -21,6 +21,12 @@ const Header = () => {
               <a>Workouts</a>
             </Link>
           </li>
+
+          <li>
+            <Link href='/workouts/add'>
+              <a>Add Workout</a>
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

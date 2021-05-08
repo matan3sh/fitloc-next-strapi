@@ -9,6 +9,7 @@ import qs from 'qs';
 
 const SearchPage = ({ workouts }) => {
   const router = useRouter();
+
   return (
     <Layout title='Search Results'>
       <Link href='/workouts'>
