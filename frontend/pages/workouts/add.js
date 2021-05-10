@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { API_URL } from 'config';
 
 import { Layout } from 'components/layout';
@@ -21,9 +24,27 @@ export default function AddWorkoutPage() {
     image: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    const hasEmptyFields = Object.values(values).some(
+      (element) => element === ''
+    );
+
+    if (hasEmptyFields) toast.error('Please Fill In All Fields');
+
+    const res = await fetch(`${API_URL}/workouts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (!res.ok) toast.error('Something Went Wrong');
+    else {
+      const workout = await res.json();
+      router.push(`/workouts/${workout.slug}`);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -33,6 +54,7 @@ export default function AddWorkoutPage() {
 
   return (
     <Layout>
+      <ToastContainer />
       <Link href='/workouts'>
         <a>Go Back</a>
       </Link>
@@ -41,7 +63,7 @@ export default function AddWorkoutPage() {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.grid}>
           <div>
-            <label htmlFor='name'>Event Name</label>
+            <label htmlFor='name'>Workout Name</label>
             <input
               type='text'
               id='name'
