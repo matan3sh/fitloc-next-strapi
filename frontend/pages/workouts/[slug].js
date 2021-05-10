@@ -1,13 +1,30 @@
 import Link from 'next/link';
 import Image from 'next/image';
+
 import { Layout } from 'components/layout';
 
-import { API_URL } from 'config';
+import { ToastContainer, toast } from 'react-toastify';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+
+import { API_URL } from 'config';
 import styles from 'styles/pages/workouts/Workout.module.css';
+import { useRouter } from 'next/router';
 
 const WorkoutPage = ({ workout }) => {
-  const deleteWorkout = () => console.log('Delete');
+  const router = useRouter();
+
+  const deleteWorkout = async () => {
+    if (confirm('Are You Sure?')) {
+      const res = await fetch(`${API_URL}/workouts/${workout.id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) toast.error(data.message);
+      else router.push(`/workouts`);
+    }
+  };
 
   return (
     <Layout>
@@ -27,6 +44,8 @@ const WorkoutPage = ({ workout }) => {
           {new Date(workout.date).toLocaleDateString('es-US')} at {workout.time}
         </span>
         <h1>{workout.name}</h1>
+        <ToastContainer />
+
         {workout.image && (
           <div className={styles.image}>
             <Image
