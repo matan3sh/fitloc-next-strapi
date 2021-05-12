@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 
+import AuthContext from 'context/AuthContext';
+
 import { FaUser } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -8,6 +10,8 @@ import { Layout } from 'components/layout';
 import styles from 'styles/pages/account/AuthForm.module.css';
 
 const RegisterPage = () => {
+  const { register, error } = useContext(AuthContext);
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +24,8 @@ const RegisterPage = () => {
       toast.error('Passwords do not match!');
       return;
     }
+
+    register({ username, email, password });
   };
 
   return (
