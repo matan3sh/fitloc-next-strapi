@@ -8,7 +8,7 @@ import moment from 'moment';
 
 import { API_URL } from 'config';
 
-import { Modal } from 'components/shared';
+import { Modal, ImageUpload } from 'components/shared';
 import { Layout } from 'components/layout';
 import { FaImage } from 'react-icons/fa';
 import styles from 'styles/pages/workouts/AddWorkOut.module.css';
@@ -56,6 +56,13 @@ export default function EditWorkoutPage({ workout }) {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
+  };
+
+  const imageUploaded = async () => {
+    const res = await fetch(`${API_URL}/workouts/${workout.id}`);
+    const data = await res.json();
+    setImagePreview(data.image.formats.thumbnail.url);
+    setShowModal(false);
   };
 
   return (
@@ -170,7 +177,7 @@ export default function EditWorkoutPage({ workout }) {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        IMAGE UPLOAD
+        <ImageUpload workoutId={workout.id} imageUploaded={imageUploaded} />
       </Modal>
     </Layout>
   );

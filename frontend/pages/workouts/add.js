@@ -20,7 +20,6 @@ export default function AddWorkoutPage() {
     date: '',
     time: '',
     description: '',
-    image: '',
   });
 
   const handleSubmit = async (e) => {

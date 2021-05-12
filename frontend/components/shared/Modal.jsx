@@ -15,7 +15,7 @@ const Modal = ({ show, onClose, children, title }) => {
   };
 
   const modalContent = show ? (
-    <div className={styles.overlay} onClick={handleClose}>
+    <div className={styles.overlay}>
       <div className={styles.modal}>
         <div className={styles.header}>
           <a href='#' onClick={handleClose}>
