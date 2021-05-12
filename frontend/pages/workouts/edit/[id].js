@@ -8,6 +8,7 @@ import moment from 'moment';
 
 import { API_URL } from 'config';
 
+import { Modal } from 'components/shared';
 import { Layout } from 'components/layout';
 import { FaImage } from 'react-icons/fa';
 import styles from 'styles/pages/workouts/AddWorkOut.module.css';
@@ -27,6 +28,7 @@ export default function EditWorkoutPage({ workout }) {
   const [imagePreview, setImagePreview] = useState(
     workout.image ? workout.image.formats.thumbnail.url : null
   );
+  const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -162,10 +164,14 @@ export default function EditWorkoutPage({ workout }) {
       )}
 
       <div>
-        <button className='btn-secondary'>
+        <button onClick={() => setShowModal(true)} className='btn-secondary'>
           <FaImage /> Set Image
         </button>
       </div>
+
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        IMAGE UPLOAD
+      </Modal>
     </Layout>
   );
 }
