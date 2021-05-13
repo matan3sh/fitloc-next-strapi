@@ -59,7 +59,7 @@ const WorkoutPage = ({ workout }) => {
         <h3>Level:</h3>
         <p>{workout.minimumSkill}</p>
         <h3>Description:</h3>
-        <p>{workout.description}</p>
+        <p dangerouslySetInnerHTML={{ __html: workout.description }} />
         <h3>Duration & Price:</h3>
         <p>
           {workout.duration}min at ${workout.price}
