@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/workouts/me",
+      "handler": "workouts.me",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/workouts/count",
       "handler": "workouts.count",
       "config": {
