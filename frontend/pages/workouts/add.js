@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { API_URL } from 'config';
+import { parseCookies } from 'helpers';
 
 import { Layout } from 'components/layout';
 import styles from 'styles/pages/workouts/AddWorkOut.module.css';
 
-export default function AddWorkoutPage() {
+export default function AddWorkoutPage({ token }) {
   const router = useRouter();
   const [values, setValues] = useState({
     name: '',
@@ -34,12 +35,18 @@ export default function AddWorkoutPage() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
 
-    if (!res.ok) toast.error('Something Went Wrong');
-    else {
+    if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        toast.error('No token included');
+        return;
+      }
+      toast.error('Something Went Wrong');
+    } else {
       const workout = await res.json();
       router.push(`/workouts/${workout.slug}`);
     }
@@ -147,4 +154,12 @@ export default function AddWorkoutPage() {
       </form>
     </Layout>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { token } = parseCookies(req);
+
+  return {
+    props: { token },
+  };
 }
