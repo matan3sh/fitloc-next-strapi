@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { Layout } from 'components/layout';
+import { WorkoutMap } from 'components/map';
 
 import { API_URL } from 'config';
 import styles from 'styles/pages/workouts/Workout.module.css';
@@ -33,6 +34,8 @@ const WorkoutPage = ({ workout }) => {
         <p>
           {workout.duration}min at ${workout.price}
         </p>
+
+        <WorkoutMap workout={workout} />
 
         <Link href='/workouts'>
           <a className={styles.back}>{'<'} Back</a>
