@@ -45,29 +45,40 @@ const WorkoutPage = ({ workout }) => {
   );
 };
 
-export async function getStaticProps({ params: { slug } }) {
+export async function getServerSideProps({ query: { slug } }) {
   const res = await fetch(`${API_URL}/workouts?slug=${slug}`);
-  const workout = await res.json();
+  const workouts = await res.json();
 
   return {
     props: {
-      workout: workout[0],
+      workout: workouts[0],
     },
-    revalidate: 1,
   };
 }
 
-export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/workouts`);
-  const workouts = await res.json();
+// export async function getStaticProps({ params: { slug } }) {
+//   const res = await fetch(`${API_URL}/workouts?slug=${slug}`);
+//   const workout = await res.json();
 
-  const paths = workouts.map((workout) => ({
-    params: { slug: workout.slug },
-  }));
-  return {
-    paths,
-    fallback: true,
-  };
-}
+//   return {
+//     props: {
+//       workout: workout[0],
+//     },
+//     revalidate: 1,
+//   };
+// }
+
+// export async function getStaticPaths() {
+//   const res = await fetch(`${API_URL}/workouts`);
+//   const workouts = await res.json();
+
+//   const paths = workouts.map((workout) => ({
+//     params: { slug: workout.slug },
+//   }));
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// }
 
 export default WorkoutPage;
