@@ -7,13 +7,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
 
 import { API_URL } from 'config';
+import { parseCookies } from 'helpers';
 
 import { Modal, ImageUpload } from 'components/shared';
 import { Layout } from 'components/layout';
 import { FaImage } from 'react-icons/fa';
 import styles from 'styles/pages/workouts/AddWorkOut.module.css';
 
-export default function EditWorkoutPage({ workout }) {
+export default function EditWorkoutPage({ workout, token }) {
   const router = useRouter();
   const [values, setValues] = useState({
     name: workout.name,
@@ -42,12 +43,18 @@ export default function EditWorkoutPage({ workout }) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
 
-    if (!res.ok) toast.error('Something Went Wrong');
-    else {
+    if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        toast.error('Unauthorized');
+        return;
+      }
+      toast.error('Something Went Wrong');
+    } else {
       const workout = await res.json();
       router.push(`/workouts/${workout.slug}`);
     }
@@ -177,19 +184,26 @@ export default function EditWorkoutPage({ workout }) {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload workoutId={workout.id} imageUploaded={imageUploaded} />
+        <ImageUpload
+          workoutId={workout.id}
+          imageUploaded={imageUploaded}
+          token={token}
+        />
       </Modal>
     </Layout>
   );
 }
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id }, req }) {
+  const { token } = parseCookies(req);
+
   const res = await fetch(`${API_URL}/workouts/${id}`);
   const workout = await res.json();
 
   return {
     props: {
       workout,
+      token,
     },
   };
 }

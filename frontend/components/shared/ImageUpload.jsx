@@ -4,7 +4,7 @@ import { API_URL } from 'config';
 
 import styles from 'styles/components/shared/Form.module.css';
 
-const ImageUpload = ({ workoutId, imageUploaded }) => {
+const ImageUpload = ({ workoutId, imageUploaded, token }) => {
   const [image, setImage] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -17,6 +17,9 @@ const ImageUpload = ({ workoutId, imageUploaded }) => {
 
     const res = await fetch(`${API_URL}/upload`, {
       method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
 
